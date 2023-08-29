@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useLocation } from 'wouter';
+
+import { createEvent } from '@/lib/events';
 
 import Layout from '@/components/Layout';
 import Container from '@/components/Container';
@@ -11,6 +14,7 @@ import Button from '@/components/Button';
 
 
 function EventNew() {
+  const [, navigate] = useLocation();
   const [error] = useState<string>();
 
   /**
@@ -19,6 +23,20 @@ function EventNew() {
 
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
+
+    const target = e.target as typeof e.target & {
+      name: { value: string };
+      location: { value: string };
+      date: { value: string };
+    }
+
+    const results = await createEvent({
+      name: target.name.value,
+      location: target.location.value,
+      date: new Date(target.date.value).toISOString()
+    })
+
+    navigate(`/event/${results.event.$id}`);
   }
 
   return (
