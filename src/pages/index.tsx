@@ -37,7 +37,7 @@ function Home() {
             <div className="grid gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {events.map((event) => {
                 return (
-                  <Link key={event.name} href="/event/1234">
+                  <Link key={event.name} href={`/event/${event.$id}`}>
                     <a>
                       <EventCard
                         date={event.date}
