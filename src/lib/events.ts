@@ -29,6 +29,9 @@ function mapDocumentToEvent(document: Models.Document) {
     name: document.name,
     location: document.location,
     date: document.date,
+    imageHeight: document.imageHeight,
+    imageFileId: document.imageFileId,
+    imageWidth: document.imageWidth,
   }
   return event;
 }

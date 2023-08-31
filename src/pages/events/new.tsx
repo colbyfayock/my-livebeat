@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLocation } from 'wouter';
 
 import { createEvent } from '@/lib/events';
+import { uploadFile } from '@/lib/storage';
 
 import Layout from '@/components/Layout';
 import Container from '@/components/Container';
@@ -12,10 +13,34 @@ import InputDate from '@/components/InputDate';
 import InputFile from '@/components/InputFile';
 import Button from '@/components/Button';
 
+interface LiveBeatImage {
+  height: number;
+  file: File;
+  width: number;
+}
 
 function EventNew() {
   const [, navigate] = useLocation();
   const [error] = useState<string>();
+  const [image, setImage] = useState<LiveBeatImage>();
+
+  function handleOnChange(event: React.FormEvent<HTMLInputElement>) {
+    const target = event.target as HTMLInputElement & {
+      files: FileList;
+    }
+    
+    const img = new Image();
+
+    img.onload = function() {
+      setImage({
+        height: img.height,
+        file: target.files[0],
+        width: img.width
+      })
+    }
+
+    img.src = URL.createObjectURL(target.files[0])
+  }
 
   /**
    * handleOnSubmit
@@ -30,10 +55,19 @@ function EventNew() {
       date: { value: string };
     }
 
+    let file;
+    
+    if ( image?.file ) {
+      file = await uploadFile(image.file);
+    }
+
     const results = await createEvent({
       name: target.name.value,
       location: target.location.value,
-      date: new Date(target.date.value).toISOString()
+      date: new Date(target.date.value).toISOString(),
+      imageFileId: file?.$id,
+      imageHeight: image?.height,
+      imageWidth: image?.width
     })
 
     navigate(`/event/${results.event.$id}`);
@@ -76,7 +110,7 @@ function EventNew() {
 
           <FormRow className="mb-6">
             <FormLabel htmlFor="image">File</FormLabel>
-            <InputFile id="image" name="image" />
+            <InputFile id="image" name="image" onChange={handleOnChange} />
             <p className="text-sm mt-2">Accepted File Types: jpg, png</p>
           </FormRow>
 

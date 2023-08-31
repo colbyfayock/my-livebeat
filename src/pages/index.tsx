@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 
 import { getEvents } from '@/lib/events';
+import { getPreviewImageById } from '@/lib/storage';
 import { LiveBeatEvent } from '@/types/events';
 
 import Layout from '@/components/Layout';
@@ -36,17 +37,18 @@ function Home() {
           <Container>
             <div className="grid gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {events.map((event) => {
+                const imageUrl = event?.imageFileId && getPreviewImageById(event.imageFileId);
                 return (
                   <Link key={event.name} href={`/event/${event.$id}`}>
                     <a>
                       <EventCard
                         date={event.date}
-                        // image={{
-                        //   alt: '',
-                        //   height: event.imageHeight,
-                        //   url: event.imageUrl,
-                        //   width: event.imageWidth
-                        // }}
+                        image={imageUrl && {
+                          alt: '',
+                          height: event.imageHeight,
+                          url: imageUrl,
+                          width: event.imageWidth
+                        }}
                         location={event.location}
                         name={event.name}
                       />
