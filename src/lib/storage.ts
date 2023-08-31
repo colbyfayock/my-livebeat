@@ -6,6 +6,11 @@ export async function uploadFile(file: File) {
   return data;
 }
 
+export async function deleteFileById(fileId: string) {
+  const data = await storage.deleteFile(import.meta.env.VITE_APPWRITE_EVENTS_BUCKET_IMAGES_ID, fileId)
+  return data;
+}
+
 export function getPreviewImageById(fileId: string) {
   return storage.getFilePreview(import.meta.env.VITE_APPWRITE_EVENTS_BUCKET_IMAGES_ID, fileId)
 }
