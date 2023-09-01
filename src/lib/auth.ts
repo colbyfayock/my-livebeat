@@ -10,3 +10,10 @@ export async function verifySession(userId: string, secret: string) {
   const data = await account.updateMagicURLSession(userId, secret)
   return data;
 }
+
+export async function getCurrentSession() {
+  const session = await account.getSession('current');
+  return {
+    session
+  }
+}
