@@ -17,3 +17,7 @@ export async function getCurrentSession() {
     session
   }
 }
+
+export async function deleteCurrentSession() {
+  await account.deleteSession('current');
+}
