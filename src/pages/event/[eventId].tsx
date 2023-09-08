@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { AppwriteException } from 'appwrite';
 import { useLocation } from 'wouter';
 
 import { LiveBeatEvent } from '@/types/events';
@@ -27,15 +28,31 @@ function Event({ params }: { params: { eventId: string }}) {
 
   useEffect(() => {
     (async function run() {
-      const { event } = await getEventById(params.eventId);
-      setEvent(event);
+      try {
+        const { event } = await getEventById(params.eventId);
+        setEvent(event);
+      } catch(error: unknown) {
+        if ( error instanceof AppwriteException ) {
+          navigate(`${window.location.pathname}?error=${error.type}`)
+        } else {
+          navigate(`${window.location.pathname}?error=unknown_error`)
+        }
+      }
     })();
   }, [params.eventId]);
 
   async function handleOnDeleteEvent() {
     if ( !event?.$id ) return;
-    await deleteEventById(event.$id);
-    navigate('/');
+    try {
+      await deleteEventById(event.$id);
+      navigate('/');
+    } catch(error: unknown) {
+      if ( error instanceof AppwriteException ) {
+        navigate(`${window.location.pathname}?error=${error.type}`)
+      } else {
+        navigate(`${window.location.pathname}?error=unknown_error`)
+      }
+    }
   }
 
   return (
@@ -66,9 +83,11 @@ function Event({ params }: { params: { eventId: string }}) {
                 <strong>Location:</strong> { event?.location }
               </p>
               {isAdmin && (
-                <p className="mt-6">
-                  <Button color="red" onClick={handleOnDeleteEvent}>Delete Event</Button>
-                </p>
+                <>
+                  <p className="mt-6">
+                    <Button color="red" onClick={handleOnDeleteEvent}>Delete Event</Button>
+                  </p>
+                </>
               )}
             </>
           )}

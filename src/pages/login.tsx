@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Redirect } from 'wouter'
+import { AppwriteException } from 'appwrite';
+import { Redirect, useLocation } from 'wouter'
 
 import { useAuth } from '@/hooks/use-auth';
 
@@ -11,6 +12,7 @@ import InputText from '@/components/InputText';
 import Button from '@/components/Button';
 
 function LogIn() {
+  const [, navigate] = useLocation();
   const { session, logIn } = useAuth();
   const [sent, setSent] = useState(false);
 
@@ -21,9 +23,16 @@ function LogIn() {
       email: { value: string };
     }
 
-    await logIn(target.email.value);
-
-    setSent(true);
+    try {
+      await logIn(target.email.value);
+      setSent(true);
+    } catch(error: unknown) {
+      if ( error instanceof AppwriteException ) {
+        navigate(`${window.location.pathname}?error=${error.type}`)
+      } else {
+        navigate(`${window.location.pathname}?error=unknown_error`)
+      }
+    }
   }
 
   if ( session ) {

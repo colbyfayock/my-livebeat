@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Route } from 'wouter';
+import { Router as WouterRouter, Route } from 'wouter';
 
 import { AuthProvider } from '@/hooks/use-auth';
 
@@ -14,13 +14,13 @@ import '@/styles/global.css'
 
 const Router = () => {
   return (
-    <>
+    <WouterRouter >
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/session" component={Session} />
       <Route path="/events/new" component={EventsNew} />
       <Route path="/event/:eventId" component={Event} />
-    </>
+    </WouterRouter>
   )
 }
 

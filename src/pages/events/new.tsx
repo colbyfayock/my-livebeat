@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AppwriteException } from 'appwrite';
 import { useLocation } from 'wouter';
 
 import { createEvent } from '@/lib/events';
@@ -21,14 +22,13 @@ interface LiveBeatImage {
 
 function EventNew() {
   const [, navigate] = useLocation();
-  const [error] = useState<string>();
   const [image, setImage] = useState<LiveBeatImage>();
 
   function handleOnChange(event: React.FormEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement & {
       files: FileList;
     }
-    
+
     const img = new Image();
 
     img.onload = function() {
@@ -49,28 +49,36 @@ function EventNew() {
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
 
-    const target = e.target as typeof e.target & {
-      name: { value: string };
-      location: { value: string };
-      date: { value: string };
+    try {
+      const target = e.target as typeof e.target & {
+        name: { value: string };
+        location: { value: string };
+        date: { value: string };
+      }
+
+      let file;
+
+      if ( image?.file ) {
+        file = await uploadFile(image.file);
+      }
+
+      const results = await createEvent({
+        name: target.name.value,
+        location: target.location.value,
+        date: new Date(target.date.value).toISOString(),
+        imageFileId: file?.$id,
+        imageHeight: image?.height,
+        imageWidth: image?.width
+      })
+
+      navigate(`/event/${results.event.$id}`);
+    } catch(error: unknown) {
+      if ( error instanceof AppwriteException ) {
+        navigate(`${window.location.pathname}?error=${error.type}`)
+      } else {
+        navigate(`${window.location.pathname}?error=unknown_error`)
+      }
     }
-
-    let file;
-    
-    if ( image?.file ) {
-      file = await uploadFile(image.file);
-    }
-
-    const results = await createEvent({
-      name: target.name.value,
-      location: target.location.value,
-      date: new Date(target.date.value).toISOString(),
-      imageFileId: file?.$id,
-      imageHeight: image?.height,
-      imageWidth: image?.width
-    })
-
-    navigate(`/event/${results.event.$id}`);
   }
 
   return (
@@ -91,7 +99,7 @@ function EventNew() {
             event gain momentum like never before on LiveBeat.
           </p>
         </div>
-      
+
         <form className="border border-slate-200 dark:border-slate-500 rounded p-6" onSubmit={handleOnSubmit}>
           <FormRow className="mb-5">
             <FormLabel htmlFor="name">Event Name</FormLabel>
@@ -102,7 +110,7 @@ function EventNew() {
             <FormLabel htmlFor="date">Event Date</FormLabel>
             <InputDate id="date" name="date" type="datetime-local" required />
           </FormRow>
-          
+
           <FormRow className="mb-5">
             <FormLabel htmlFor="location">Event Location</FormLabel>
             <InputText id="location" name="location" type="text" required />
@@ -115,10 +123,6 @@ function EventNew() {
           </FormRow>
 
           <Button>Submit</Button>
-
-          {error && (
-            <p className="bg-red-50 p-4 mt-6 rounded">{ error }</p>
-          )}
         </form>
 
       </Container>
