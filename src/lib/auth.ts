@@ -6,7 +6,12 @@ export async function logIn(email: string) {
   return data;
 }
 
-export async function verifySession(userId: string, secret: string) {
+export interface VerifySessionOptions {
+  userId: string;
+  secret: string;
+}
+
+export async function verifySession({ userId, secret }: VerifySessionOptions) {
   const data = await account.updateMagicURLSession(userId, secret)
   return data;
 }

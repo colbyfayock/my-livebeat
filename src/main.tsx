@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Route } from 'wouter';
 
+import { AuthProvider } from '@/hooks/use-auth';
+
 import Home from '@/pages/index';
 import Login from '@/pages/login';
 import Session from '@/pages/session';
@@ -24,6 +26,8 @@ const Router = () => {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Router />
+    <AuthProvider>
+      <Router />
+    </AuthProvider>
   </React.StrictMode>,
 )

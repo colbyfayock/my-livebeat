@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Redirect } from 'wouter'
 
-import { logIn } from '@/lib/auth';
+import { useAuth } from '@/hooks/use-auth';
 
 import Layout from '@/components/Layout';
 import Container from '@/components/Container';
@@ -10,6 +11,7 @@ import InputText from '@/components/InputText';
 import Button from '@/components/Button';
 
 function LogIn() {
+  const { session, logIn } = useAuth();
   const [sent, setSent] = useState(false);
 
   async function handleOnSubmit(e: React.SyntheticEvent) {
@@ -23,6 +25,11 @@ function LogIn() {
 
     setSent(true);
   }
+
+  if ( session ) {
+    return <Redirect to="/" />
+  }
+
   return (
     <Layout>
       <Container>
