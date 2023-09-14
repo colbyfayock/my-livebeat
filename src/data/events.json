@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Summer Fest",
+    "date": "2023-08-15T21:00:00.000+00:00",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "imageUrl": "/images/summer-fest.jpeg",
+    "location": "Stadium Arena, Cityville"
+  },
+  {
+    "name": "Eats & Beats",
+    "date": "2023-10-06T00:00:00.000+00:00",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "imageUrl": "/images/eats-and-beats.jpeg",
+    "location": "Riverside Manor, Laketown"
+  },
+  {
+    "name": "DJ Electric",
+    "date": "2023-11-25T02:00:00.000+00:00",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "imageUrl": "/images/dj-electric.jpeg",
+    "location": "Club Beats, Metro City"
+  },
+  {
+    "name": "Sunset Beach Bash",
+    "date": "2024-07-29T22:00:00.000+00:00",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "imageUrl": "/images/sunset-beach-bash.jpeg",
+    "location": "Paradise Cove, Seaside Village"
+  },
+  {
+    "name": "Rock Revival",
+    "date": "2024-04-20T22:00:00.000+00:00",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "imageUrl": "/images/rock-revival.jpeg",
+    "location": "The Ampitheater, Hillside Park"
+  },
+  {
+    "name": "Sky High Fiesta",
+    "date": "2023-09-29T00:00:00.000+00:00",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "imageUrl": "/images/sky-high-fiesta.jpeg",
+    "location": "Rooftop Lounge, Sky Towers"
+  }
+]
