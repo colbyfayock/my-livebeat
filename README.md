@@ -6,6 +6,8 @@ Learn how to build a full stack app including database management and authentica
 
 [Check out the course on eggheadio!](https://egghead.io/courses/full-stack-with-react-and-appwrite-e1e46f61?af=atzgap)
 
+Or [check out the demo](https://livebeat.vercel.app/)!
+
 ## More tutorials and walkthroughs
 
 🐦 [Follow me on Twitter](https://twitter.com/colbyfayock)
