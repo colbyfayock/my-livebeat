@@ -54,19 +54,25 @@ function Home() {
             <div className="grid gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {events.map((event) => {
                 const imageUrl = event?.imageFileId && getPreviewImageById(event.imageFileId);
+                const eventCardProps: Record<string, object | string | number> = {};
+
+                if ( imageUrl ) {
+                  eventCardProps.image = {
+                    alt: '',
+                    height: event.imageHeight,
+                    url: imageUrl,
+                    width: event.imageWidth
+                  }
+                }
+
                 return (
                   <Link key={event.name} href={`/event/${event.$id}`}>
                     <a>
                       <EventCard
                         date={event.date}
-                        image={imageUrl && {
-                          alt: '',
-                          height: event.imageHeight,
-                          url: imageUrl,
-                          width: event.imageWidth
-                        }}
                         location={event.location}
                         name={event.name}
+                        {...eventCardProps}
                       />
                     </a>
                   </Link>
