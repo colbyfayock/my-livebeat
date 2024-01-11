@@ -84,6 +84,10 @@ function EventNew() {
   return (
     <Layout>
 
+      <Container className="mb-12">
+        <p className="rounded bg-red-100 dark:bg-red-900 text-sm text-center py-2">Creating a new event is disabled for this demo.</p>
+      </Container>
+
       <Container className="grid gap-12 grid-cols-1 md:grid-cols-2">
         <div>
           <h1 className="text-3xl font-bold mb-6">
